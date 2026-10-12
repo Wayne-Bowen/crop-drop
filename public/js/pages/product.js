@@ -8,7 +8,7 @@ try {
   document.title = `${p.name} | CropDrop`; $('#crumb').textContent = p.name;
   const low = p.quantity <= 20;
   root.innerHTML = `<div class="product">
-    <div class="media">${media(p)}</div>
+    <div class="media">${media(p, 1200)}</div>
     <div>
       <span class="eyebrow">${esc(p.category)}</span>
       <h1 style="margin-top:10px;font-size:clamp(1.8rem,4vw,2.8rem)">${esc(p.name)}</h1>

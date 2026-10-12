@@ -26,7 +26,7 @@ function draw() {
   }
   const total = items.reduce((s, p) => s + p.price * cart[p.id], 0), count = items.reduce((s, p) => s + cart[p.id], 0);
   root.innerHTML = `<div class="cart-grid"><div class="panel">${items.map(p => `<div class="line">
-      <div class="thumb">${media(p)}</div>
+      <div class="thumb">${media(p, 200)}</div>
       <div><a href="/product?id=${p.id}" style="font-weight:600;text-decoration:none">${esc(p.name)}</a><div class="meta">${esc(p.farmer)} | ${money(p.price)} each</div></div>
       <div class="ctl" style="display:flex;align-items:center;gap:14px;justify-content:flex-end;flex-wrap:wrap">
         <div class="qty"><button type="button" data-d="-1" data-id="${p.id}" aria-label="Less">-</button><input type="number" min="1" max="${p.quantity}" value="${cart[p.id]}" data-q="${p.id}" aria-label="Quantity for ${esc(p.name)}"><button type="button" data-d="1" data-id="${p.id}" aria-label="More">+</button></div>

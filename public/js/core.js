@@ -111,25 +111,28 @@ export function toast(msg, type = '') {
 /* ---------- layout ---------- */
 export async function mountLayout(active = '') {
   document.body.insertAdjacentHTML('afterbegin', '<div class="topbar"></div>');
+  if (active !== 'home') document.body.classList.add('inner');
   const u = await me();
   const L = (href, label, key) => `<a href="${href}" class="${active === key ? 'on' : ''}">${label}</a>`;
   const showCart = !u || u.role === 'buyer';
+  const mine = u ? (u.role === 'farmer' ? L('/dashboard', 'My listings', 'dash') : u.role === 'buyer' ? L('/orders', 'My orders', 'orders') : L('/admin', 'Admin', 'admin')) : '';
   $('#header').innerHTML = `<div class="wrap nav">
     <a class="logo" href="/" aria-label="CropDrop home">${LOGO}<span>Crop<b>Drop</b></span></a>
-    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">${icon('menu')}</button>
-    <nav class="nav-links" id="navLinks">
-      ${L('/catalogue', 'Market', 'market')}${L('/farmers', 'Farmers', 'farmers')}${L('/about', 'About', 'about')}${L('/contact', 'Contact', 'contact')}
-      ${u && u.role === 'farmer' ? L('/dashboard', 'My listings', 'dash') : ''}${u && u.role === 'buyer' ? L('/orders', 'My orders', 'orders') : ''}${u && u.role === 'admin' ? L('/admin', 'Admin', 'admin') : ''}
-      ${u ? '<a href="#" id="logout">Log out</a>' : L('/login', 'Log in', 'login')}
-      ${showCart ? `<a href="/cart" class="cart-btn">${icon('cart')}<span>Cart</span><span class="cart-count">${cartCount()}</span></a>` : ''}
-    </nav></div>`;
+    <div class="menu-panel" id="menuPanel">
+      <nav class="nav-mid" aria-label="Main">${L('/catalogue', 'Market', 'market')}${L('/farmers', 'Farmers', 'farmers')}${L('/#how', 'How it works', '')}${L('/about', 'About', 'about')}${L('/contact', 'Contact', 'contact')}</nav>
+      <div class="nav-end">
+        ${showCart ? `<a href="/cart" class="cart-btn" aria-label="Cart">${icon('cart')}<span class="cart-count">${cartCount()}</span></a>` : ''}
+        ${mine}
+        ${u ? '<a href="#" id="logout">Log out</a>' : `<a href="/login">Log in</a><a class="btn light sm" href="/login#register">Start selling</a>`}
+      </div>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">${icon('menu')}</button></div>`;
   $('#footer').innerHTML = `<div class="wrap"><div class="foot">
     <div><a class="logo" href="/">${LOGO}<span>Crop<b>Drop</b></span></a><p class="muted small" style="margin-top:14px;max-width:26em">Farmers list it. You buy it. Built in Kenya, no middlemen were consulted.</p></div>
-    <div><h4>Shop</h4><a href="/catalogue">The market</a><a href="/farmers">Farmers</a><a href="/cart">Cart</a></div>
-    <div><h4>Company</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/login#register">Sell as a farmer</a></div>
-    <div><h4>Account</h4><a href="/login">Log in</a><a href="/orders">My orders</a></div>
-  </div><div class="foot-b"><span>&copy; ${new Date().getFullYear()} CropDrop</span><span>info@cropdrop.example | +254 700 000 000</span></div></div>`;
-  $('#menuBtn').addEventListener('click', e => { const o = $('#navLinks').classList.toggle('open'); e.currentTarget.setAttribute('aria-expanded', o); });
+    <div class="foot-links"><a href="/catalogue">Market</a><a href="/farmers">Farmers</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/login">Log in</a></div>
+  </div><div class="foot-b"><span>&copy; ${new Date().getFullYear()} CropDrop</span><span>Photos from Unsplash | info@cropdrop.example</span></div></div>`;
+  $('#menuBtn').addEventListener('click', e => { const o = document.body.classList.toggle('menu'); e.currentTarget.setAttribute('aria-expanded', o); });
+  const hd = $('#header'); const onScroll = () => hd.classList.toggle('solid', scrollY > 40); onScroll(); addEventListener('scroll', onScroll, { passive: true });
   const lo = $('#logout');
   if (lo) lo.addEventListener('click', async e => { e.preventDefault(); await api('/auth/logout', { method: 'POST' }); resetToken(); localStorage.removeItem('cd_cart'); location.href = '/'; });
   initFx();
@@ -146,7 +149,7 @@ function initFx() {
   reveal();
   // soft red glow that follows the cursor on cards
   document.addEventListener('pointermove', e => {
-    const c = e.target.closest && e.target.closest('.card'); if (!c) return;
+    const c = e.target.closest && e.target.closest('.pcard'); if (!c) return;
     const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
   });
   document.addEventListener('click', e => {
@@ -162,8 +165,13 @@ export function countUp(el, to, ms = 1200) {
 }
 
 /* ---------- product card ---------- */
-export function media(p, cls = '') {
-  return p.photo ? `<img src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy" data-cat="${esc(p.category)}">` : glyph(p.category, cls);
+// Unsplash images get a size and quality so pages stay fast; uploaded photos are used as they are.
+export function photoSrc(url, w = 700) {
+  if (!url) return '';
+  return url.startsWith('https://images.unsplash.com/') ? url.split('?')[0] + `?auto=format&fit=crop&w=${w}&q=70` : url;
+}
+export function media(p, w = 700) {
+  return p.photo ? `<img src="${esc(photoSrc(p.photo, w))}" alt="${esc(p.name)}" loading="lazy" data-cat="${esc(p.category)}">` : glyph(p.category);
 }
 // If a photo file is missing, swap in the category glyph instead of a broken image.
 document.addEventListener('error', e => {
@@ -171,13 +179,11 @@ document.addEventListener('error', e => {
 }, true);
 export function productCard(p) {
   const low = p.quantity <= 20;
-  return `<article class="card rv"><div class="media">${media(p)}<span class="chip">${esc(p.category)}</span></div>
-    <div class="body"><h3><a href="/product?id=${p.id}">${esc(p.name)}</a></h3>
-      <div class="meta">${icon('pin')}${esc(p.location)}<span class="dim">|</span>${esc(p.farmer)}</div>
-      <div class="stock" aria-hidden="true"><i style="--p:${Math.min(p.quantity / 120, 1).toFixed(2)}"></i></div>
-      <div class="stock-note ${low ? 'low' : ''}">${low ? `Only ${p.quantity} left` : `${p.quantity} in stock`}</div>
-      <div class="row"><span class="price">${money(p.price)}</span><button class="btn sm" data-add="${p.id}" data-max="${p.quantity}">${icon('plus')}Add</button></div>
-    </div></article>`;
+  return `<article class="pcard rv">
+    <a class="pimg" href="/product?id=${p.id}" tabindex="-1" aria-hidden="true">${media(p)}<span class="tagpill">${esc(p.category)}</span>${low ? `<span class="lowpill">Only ${p.quantity} left</span>` : ''}</a>
+    <button class="addfab" data-add="${p.id}" data-max="${p.quantity}" aria-label="Add ${esc(p.name)} to cart">${icon('plus')}</button>
+    <div class="pinfo"><div><h3><a href="/product?id=${p.id}">${esc(p.name)}</a></h3><p>${esc(p.location)} | ${esc(p.farmer)}</p></div><span class="price">${money(p.price)}</span></div>
+  </article>`;
 }
 export const skeletons = n => Array.from({ length: n }, () => '<div class="skel"></div>').join('');
 

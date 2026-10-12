@@ -1,6 +1,8 @@
 // End-to-end check of the API against a real Postgres. Run: DATABASE_URL=... npm test
 process.env.NODE_ENV = 'test';
 require('dotenv').config();
+process.env.ADMIN_EMAIL = 'admin@cropdrop.local';
+process.env.ADMIN_PASSWORD = 'Admin@1234';
 if (!/_test(\?|$)/.test(process.env.DATABASE_URL || '')) {
   console.error('Refusing to run: DATABASE_URL must point at a database whose name ends in _test, because this test wipes its tables.');
   process.exit(1);
@@ -56,6 +58,10 @@ function ok(name, cond, extra = '') { cond ? pass++ : fail++; console.log((cond 
   const ov = (await admin.req('GET', '/api/admin/overview')).data; ok('admin sees pending farmer', ov.farmers.length === 1);
   r = await admin.req('POST', `/api/admin/farmers/${ov.farmers[0].id}/approve`); ok('admin approves farmer', r.status === 200);
 
+  r = await farmer.req('POST', '/api/produce', (() => { const f = new FormData(); Object.entries({ name: 'Linked', category_id: '1', price: '10', quantity: '5', location: 'Nakuru', photo_url: 'https://evil.example.com/photo-1.jpg' }).forEach(([k, v]) => f.append(k, v)); return f; })(), true); ok('photo link from another site is rejected', r.status === 400);
+  r = await farmer.req('POST', '/api/produce', (() => { const f = new FormData(); Object.entries({ name: 'Linked', category_id: '1', price: '10', quantity: '5', location: 'Nakuru', photo_url: 'https://images.unsplash.com/photo-1513791053024-3b50799fdd7b?w=999' }).forEach(([k, v]) => f.append(k, v)); return f; })(), true); ok('Unsplash photo link accepted (query stripped)', r.status === 201);
+  const lk = (await farmer.req('GET', '/api/produce/mine')).data.items.find(i => i.name === 'Linked'); ok('stored link has no query string', lk && lk.photo === 'https://images.unsplash.com/photo-1513791053024-3b50799fdd7b');
+  if (lk) await farmer.req('DELETE', `/api/produce/${lk.id}`);
   r = await farmer.req('POST', '/api/produce', form({ price: '-5' }), true); ok('negative price rejected', r.status === 400 && r.data.fields.price);
   const fake = new FormData(); ['name','category_id','price','quantity','location'].forEach((k, i) => fake.append(k, ['Fake','1','10','5','Nakuru'][i])); fake.append('photo', new Blob([Buffer.from('<?php echo 1; ?>')], { type: 'image/png' }), 'x.png');
   r = await farmer.req('POST', '/api/produce', fake, true); ok('fake image (wrong file signature) rejected', r.status === 400);

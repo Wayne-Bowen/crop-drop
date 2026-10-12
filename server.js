@@ -18,7 +18,7 @@ if (prod) app.set('trust proxy', 1); // hosts put a proxy in front of the app
 app.use(helmet({
   contentSecurityPolicy: { directives: {
     defaultSrc: ["'self'"], scriptSrc: ["'self'"], styleSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", 'data:', 'blob:'], fontSrc: ["'self'"], connectSrc: ["'self'"],
+    imgSrc: ["'self'", 'data:', 'blob:', 'https://images.unsplash.com'], fontSrc: ["'self'"], connectSrc: ["'self'"],
     objectSrc: ["'none'"], frameAncestors: ["'none'"], formAction: ["'self'"], upgradeInsecureRequests: null,
   } },
 }));

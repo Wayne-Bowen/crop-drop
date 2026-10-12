@@ -1,4 +1,4 @@
-import { $, $$, api, esc, money, fdate, icon, media, mountLayout, requireRole, showFieldErrors, toast } from '/js/core.js';
+import { $, $$, api, esc, money, fdate, icon, media, photoSrc, mountLayout, requireRole, showFieldErrors, toast } from '/js/core.js';
 const user = await requireRole('farmer');
 if (!user) throw new Error('redirect');
 await mountLayout('dash');
@@ -21,7 +21,7 @@ function draw() {
     .map(([n, l]) => `<div class="stat"><strong>${n}</strong><span>${l}</span></div>`).join('');
   if (tab === 'listings') {
     $('#pane').innerHTML = listings.length ? `<div class="table-wrap"><table><thead><tr><th>Produce</th><th>Category</th><th class="r">Price</th><th class="r">Stock</th><th>Status</th><th></th></tr></thead><tbody>
-      ${listings.map(l => `<tr><td><div class="cell"><div class="thumb">${media(l)}</div><div><b>${esc(l.name)}</b><div class="muted small">${esc(l.location)}</div></div></div></td><td>${esc(l.category)}</td><td class="r">${money(l.price)}</td><td class="r">${l.quantity}</td>
+      ${listings.map(l => `<tr><td><div class="cell"><div class="thumb">${media(l, 200)}</div><div><b>${esc(l.name)}</b><div class="muted small">${esc(l.location)}</div></div></div></td><td>${esc(l.category)}</td><td class="r">${money(l.price)}</td><td class="r">${l.quantity}</td>
       <td><span class="pill ${l.status}">${l.status}</span></td><td><div class="actions"><button class="btn ghost sm" data-edit="${l.id}">${icon('edit')}Edit</button><button class="btn danger sm" data-del="${l.id}" aria-label="Delete ${esc(l.name)}">${icon('trash')}</button></div></td></tr>`).join('')}</tbody></table></div>`
       : `<div class="empty">${icon('box')}<h2>Nothing listed yet.</h2><p class="muted">Add your first produce and buyers can start finding you.</p>${approved ? '<button class="btn" id="firstBtn" type="button">Add produce</button>' : ''}</div>`;
   } else {
@@ -37,8 +37,8 @@ function openModal(l) {
   if (!approved) return toast('Your account needs admin approval before you can list produce.');
   editing = l || null; form.reset(); showFieldErrors(form, {}); $('#pMsg').innerHTML = '';
   $('#mTitle').textContent = l ? 'Edit produce' : 'Add produce';
-  $('#preview').innerHTML = l && l.photo ? `<img src="${esc(l.photo)}" alt="">` : 'No photo yet';
-  if (l) { form.name.value = l.name; form.category_id.value = l.category_id; form.location.value = l.location; form.price.value = l.price; form.quantity.value = l.quantity; form.description.value = l.description || ''; }
+  $('#preview').innerHTML = l && l.photo ? `<img src="${esc(photoSrc(l.photo, 800))}" alt="">` : 'No photo yet';
+  if (l) { form.name.value = l.name; form.category_id.value = l.category_id; form.location.value = l.location; form.price.value = l.price; form.quantity.value = l.quantity; form.description.value = l.description || ''; form.photo_url.value = ''; }
   modal.classList.add('open'); form.name.focus();
 }
 const close = () => modal.classList.remove('open');
@@ -56,6 +56,10 @@ $('#pane').addEventListener('click', async e => {
   }
 });
 
+$('#purl').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  if (/^https:\/\/images\.unsplash\.com\/photo-/.test(v)) $('#preview').innerHTML = `<img src="${esc(photoSrc(v, 800))}" alt="">`;
+});
 $('#pphoto').addEventListener('change', e => {
   const f = e.target.files[0]; if (!f) return;
   $('#preview').innerHTML = ''; const img = new Image(); img.alt = ''; img.src = URL.createObjectURL(f); $('#preview').appendChild(img);
@@ -69,6 +73,7 @@ form.addEventListener('submit', async e => {
   if (!(Number(v('price')) > 0)) errs.price = 'Price must be more than 0.';
   if (!/^\d+$/.test(v('quantity'))) errs.quantity = 'Quantity must be a whole number, 0 or more.';
   if (v('location').length < 2) errs.location = 'Enter the location.';
+  if (v('photo_url') && !/^https:\/\/images\.unsplash\.com\/photo-[\w-]+/.test(v('photo_url'))) errs.photo_url = 'Use an address that starts with https://images.unsplash.com/photo-';
   if (file && !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) errs.photo = 'Photos must be JPG, PNG or WEBP.';
   if (file && file.size > 2 * 1024 * 1024) errs.photo = 'Photo must be 2 MB or smaller.';
   showFieldErrors(form, errs); if (Object.keys(errs).length) return;

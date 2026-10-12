@@ -3,6 +3,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
+const photos = require('./seed-photos.json');
 const db = require('./db');
 
 const farmers = [
@@ -23,7 +24,7 @@ const produce = [
   [3, 'Fruits', 'Bananas', 'bananas', 60, 180, 'Machakos', 'Sweet bananas sold per bunch.'],
   [1, 'Legumes', 'Rosecoco beans', 'beans', 140, 350, 'Kiambu', 'Cleaned rosecoco beans. Priced per kg.'],
   [5, 'Cereals', 'Wheat flour (2 kg)', 'wheat-flour', 130, 80, 'Nyeri', 'Stone-ground wheat flour, 2 kg packs.'],
-  [4, 'Poultry and eggs', 'Chicken (dressed)', 'chicken', 650, 40, 'Thika', 'Free-range chicken, dressed. Price per bird.'],
+  [4, 'Poultry and eggs', 'Free-range chicken', 'chicken', 650, 40, 'Thika', 'Free-range chicken, ready to cook. Price per bird.'],
 ];
 
 (async () => {
@@ -41,11 +42,12 @@ const produce = [
 
   let added = 0;
   for (const [fi, cat, name, slug, price, qty, loc, desc] of produce) {
-    if ((await db.query('SELECT 1 FROM produce WHERE name = $1 AND farmer_id = $2', [name, ids[fi]])).rowCount) continue;
+    const photo = (photos[slug] || '').split('?')[0] || (fs.existsSync(path.join(__dirname, 'public', 'img', 'products', slug + '.jpg')) ? `/img/products/${slug}.jpg` : null);
+    if ((await db.query('SELECT 1 FROM produce WHERE name = $1 AND farmer_id = $2', [name, ids[fi]])).rowCount) {
+      if (photo) await db.query("UPDATE produce SET photo = $1 WHERE name = $2 AND farmer_id = $3 AND (photo IS NULL OR photo NOT LIKE '/uploads/%')", [photo, name, ids[fi]]);
+      continue;
+    }
     const c = (await db.query('SELECT id FROM categories WHERE name = $1', [cat])).rows[0];
-    const photo = fs.existsSync(path.join(__dirname, 'public', 'img', 'products', slug + '.jpg')) ? `/img/products/${slug}.jpg` : null;
-    await db.query("INSERT INTO produce (farmer_id,category_id,name,description,price,quantity,photo,location,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'approved')",
-      [ids[fi], c.id, name, desc, price, qty, photo, loc]);
     await db.query("INSERT INTO produce (farmer_id,category_id,name,description,price,quantity,photo,location,status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'approved')",
       [ids[fi], c.id, name, desc, price, qty, photo, loc]);
     added++;

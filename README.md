@@ -31,9 +31,14 @@ Admin: Approve farmers, approve or reject listings, move orders Placed, Confirme
    ```
 Tables are created automatically on first start (`schema.sql`).
 
-Demo logins after `npm run seed`: admin `admin@cropdrop.local` (password from `.env`, default `Admin@1234`), farmer `mary@cropdrop.local` / `Farmer@1234`, buyer `buyer@cropdrop.local` / `Buyer@1234`.
+**Admin login:** `bowenwayne44@gmail.com`. If you leave `ADMIN_PASSWORD` empty in `.env`, a random password is generated and printed **once** in the terminal the first time the server starts, so copy it then. Or set `ADMIN_PASSWORD` in `.env` before the first start. (If the database already has the older default admin, its email is switched to this one and its password is kept.)
 
-Product photos: farmers upload them from the dashboard. For seeded produce, drop JPGs named `tomatoes.jpg`, `kale.jpg`, `maize.jpg`, `mangoes.jpg`, `eggs.jpg`, `milk.jpg`, `green-grams.jpg`, `onions.jpg`, `bananas.jpg`, `beans.jpg`, `wheat-flour.jpg`, `chicken.jpg` into `public/img/products/` **before** running the seed.
+Demo logins after `npm run seed`: farmer `mary@cropdrop.local` / `Farmer@1234`, buyer `buyer@cropdrop.local` / `Buyer@1234`.
+
+### Photos
+Product photos can be an upload or an **Unsplash link**. Farmers can paste an `images.unsplash.com/photo-...` address in the listing form (other sites are rejected on purpose). To get one: open a photo on unsplash.com, right-click the image, choose Copy image address.
+
+For the demo products, edit `seed-photos.json` (slug to Unsplash address) and run `npm run seed` again; products that have no photo yet get one without creating duplicates. Tomatoes, mangoes and bananas are already filled in. Photos from Unsplash are used under the Unsplash License.
 
 ## Environment variables
 | Name | Purpose |
@@ -43,7 +48,7 @@ Product photos: farmers upload them from the dashboard. For seeded produce, drop
 | `DATABASE_URL` | PostgreSQL connection string. |
 | `DATABASE_SSL` | `true` when the database host requires SSL (most hosted Postgres does). |
 | `SESSION_SECRET` | Long random string used to sign session cookies. |
-| `ADMIN_EMAIL`, `ADMIN_PASSWORD` | The first admin account, created if no admin exists. |
+| `ADMIN_EMAIL`, `ADMIN_PASSWORD` | The first admin account, created if no admin exists. Leave the password empty to generate one. |
 
 Generate a secret: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 

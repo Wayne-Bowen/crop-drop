@@ -6,14 +6,14 @@
 <title>My listings | CropDrop</title>
 <meta name="description" content="Manage your produce listings and see orders.">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/unbounded-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-tight-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body data-active="dash">
 <header class="site-header" id="header"></header>
 <main id="main">
 
-<div class="page-h"><div class="wrap" style="display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap"><div><span class="eyebrow">Farmer dashboard</span><h1 style="margin-top:12px">My listings</h1></div><button class="btn" id="newBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add produce</button></div></div>
+<div class="page-h"><div class="wrap" style="display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap"><div><span class="eyebrow">Farmer dashboard</span><h1>My listings.</h1></div><button class="btn" id="newBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add produce</button></div></div>
 <div class="wrap" style="padding-bottom:80px"><div id="banner"></div>
   <div class="stats" id="stats"></div>
   <div class="dtabs"><button class="dtab on" data-t="listings">Listings</button><button class="dtab" data-t="orders">Orders for my produce</button></div>
@@ -29,7 +29,8 @@
     <div class="two"><div class="fg"><label for="pprice">Price (KES)</label><input class="field" id="pprice" name="price" type="number" step="0.01" min="0.01"><div class="err"></div></div>
     <div class="fg"><label for="pqty">Quantity</label><input class="field" id="pqty" name="quantity" type="number" step="1" min="0"><div class="err"></div></div></div>
     <div class="fg"><label for="pdesc">Description</label><textarea id="pdesc" name="description" rows="3" maxlength="600" placeholder="Variety, how it's picked, what unit the price is for"></textarea><div class="err"></div></div>
-    <div class="fg"><label for="pphoto">Photo (JPG, PNG or WEBP, up to 2 MB)</label><div class="preview" id="preview">No photo yet</div><input class="field" id="pphoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp" style="margin-top:10px"><div class="err"></div></div>
+    <div class="fg"><label for="purl">Photo link (optional, an images.unsplash.com address)</label><input class="field" id="purl" name="photo_url" placeholder="https://images.unsplash.com/photo-..."><div class="err"></div></div>
+    <div class="fg"><label for="pphoto">Or upload a photo (JPG, PNG or WEBP, up to 2 MB)</label><div class="preview" id="preview">No photo yet</div><input class="field" id="pphoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp" style="margin-top:10px"><div class="err"></div></div>
     <p class="muted small">New and edited listings go to an admin for approval before buyers see them.</p>
     <button class="btn" type="submit" id="pSave">Save listing</button>
   </form>

@@ -6,24 +6,26 @@
 <title>The market | CropDrop</title>
 <meta name="description" content="Search and filter fresh produce listed directly by approved farmers.">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/unbounded-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-tight-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body data-active="market">
 <header class="site-header" id="header"></header>
 <main id="main">
 
-<div class="page-h"><div class="wrap"><span class="eyebrow">The market</span><h1 style="margin-top:12px">Fresh on the market</h1><p class="lead">Everything here was grown by an actual person. Search it, filter it, buy it.</p>
-  <form class="filters" id="filters" role="search">
-    <div><label class="sr" for="q">Search</label><input class="field" id="q" name="q" placeholder="Search produce" autocomplete="off"></div>
-    <div><label class="sr" for="category">Category</label><select id="category" name="category"><option value="">All categories</option></select></div>
-    <div><label class="sr" for="location">Location</label><input class="field" id="location" name="location" placeholder="Location, e.g. Nakuru" autocomplete="off"></div>
-    <div><label class="sr" for="sort">Sort</label><select id="sort" name="sort"><option value="">Newest first</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="stock">Running out soon</option></select></div>
-    <button class="btn" type="submit">Filter</button>
+<div class="page-h"><div class="wrap"><span class="eyebrow">The market</span><h1>Fresh on the market.</h1><p class="lead">Everything here was grown by an actual person. Search it, filter it, buy it.</p>
+  <form id="filters" role="search" onsubmit="return false">
+    <div class="controls">
+      <div><label class="sr" for="q">Search</label><input class="field" id="q" name="q" placeholder="Search produce" autocomplete="off"></div>
+      <div><label class="sr" for="location">Location</label><input class="field" id="location" name="location" placeholder="Location, e.g. Nakuru" autocomplete="off"></div>
+      <div><label class="sr" for="sort">Sort</label><select id="sort" name="sort"><option value="">Newest first</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="stock">Running out soon</option></select></div>
+    </div>
+    <input type="hidden" id="category" name="category" value="">
+    <div class="chips" id="chips" role="group" aria-label="Category"></div>
   </form>
 </div></div>
-<section style="padding-top:30px"><div class="wrap">
-  <p class="muted small" id="count" aria-live="polite" style="margin-bottom:18px">&nbsp;</p>
+<section style="padding-top:20px"><div class="wrap">
+  <p class="muted small" id="count" aria-live="polite" style="margin-bottom:22px">&nbsp;</p>
   <div class="grid" id="grid"></div>
   <div class="pager"><button class="btn ghost" id="more" hidden>Load more</button></div>
 </div></section>

@@ -62,6 +62,16 @@ async function requireApprovedFarmer(req) {
   const { rows } = await db.query('SELECT status FROM users WHERE id = $1', [req.session.user.id]);
   if (!rows[0] || rows[0].status !== 'approved') throw new HttpError(403, 'Your farmer account is waiting for admin approval.');
 }
+// Farmers may paste an Unsplash image link instead of uploading. Only images.unsplash.com photo URLs are accepted.
+function unsplashUrl(raw) {
+  const v = String(raw || '').trim();
+  if (!v) return null;
+  try {
+    const u = new URL(v);
+    if (u.protocol !== 'https:' || u.hostname !== 'images.unsplash.com' || !/^\/photo-[\w-]+$/.test(u.pathname)) throw 0;
+    return u.origin + u.pathname; // drop the query string; the front end adds sizing
+  } catch { throw new HttpError(400, 'Photo links must be an images.unsplash.com photo address.'); }
+}
 const dropFile = req => { if (req.file) fs.unlink(req.file.path, () => {}); };
 function checkPhoto(req) {
   if (req.file && !looksLikeImage(req.file)) throw new HttpError(400, 'That file is not a real image.');
@@ -73,7 +83,7 @@ router.post('/', requireRole('farmer'), upload.single('photo'), wrap(async (req,
     const b = await readBody(req);
     if (Object.keys(b.f).length) { dropFile(req); return res.status(400).json({ error: 'Check the highlighted fields.', fields: b.f }); }
     checkPhoto(req);
-    const photo = req.file ? '/uploads/' + req.file.filename : null;
+    const photo = req.file ? '/uploads/' + req.file.filename : unsplashUrl(req.body.photo_url);
     const r = await db.query('INSERT INTO produce (farmer_id,category_id,name,description,price,quantity,photo,location) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id',
       [req.session.user.id, b.category_id, b.name, b.description, b.price, b.quantity, photo, b.location]);
     res.status(201).json({ id: r.rows[0].id });
@@ -89,11 +99,12 @@ router.put('/:id', requireRole('farmer'), upload.single('photo'), wrap(async (re
     const b = await readBody(req);
     if (Object.keys(b.f).length) { dropFile(req); return res.status(400).json({ error: 'Check the highlighted fields.', fields: b.f }); }
     checkPhoto(req);
-    const photo = req.file ? '/uploads/' + req.file.filename : row.photo;
+    const link = unsplashUrl(req.body.photo_url);
+    const photo = req.file ? '/uploads/' + req.file.filename : (link || row.photo);
     // Any edit sends the listing back for admin approval.
     await db.query(`UPDATE produce SET category_id=$1, name=$2, description=$3, price=$4, quantity=$5, location=$6, photo=$7, status='pending' WHERE id=$8 AND farmer_id=$9`,
       [b.category_id, b.name, b.description, b.price, b.quantity, b.location, photo, id, req.session.user.id]);
-    if (req.file) removeUpload(row.photo);
+    if (photo !== row.photo) removeUpload(row.photo); // only deletes files we stored ourselves
     res.json({ ok: true });
   } catch (e) { dropFile(req); throw e; }
 }));

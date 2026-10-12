@@ -11,6 +11,7 @@ function show(which) {
 }
 $$('.tab').forEach(t => t.addEventListener('click', () => show(t.dataset.t)));
 if (location.hash === '#register') { show('register'); }
+const pre = new URLSearchParams(location.search).get('email'); if (pre) { rf.elements.email.value = pre; if (location.hash === '#register') rf.elements.full_name.focus(); }
 
 lf.addEventListener('submit', async e => {
   e.preventDefault();

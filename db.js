@@ -36,13 +36,17 @@ async function init() {
   for (const c of ['Vegetables', 'Fruits', 'Cereals', 'Dairy', 'Poultry and eggs', 'Legumes']) {
     await query('INSERT INTO categories (name) VALUES ($1) ON CONFLICT (name) DO NOTHING', [c]);
   }
+  const adminEmail = (process.env.ADMIN_EMAIL || 'bowenwayne44@gmail.com').toLowerCase();
+  // If an older default admin exists, move it to the configured email (keeps its password).
+  await query("UPDATE users SET email = $1 WHERE role = 'admin' AND email = 'admin@cropdrop.local' AND NOT EXISTS (SELECT 1 FROM users WHERE lower(email) = $1)", [adminEmail]);
   const { rowCount } = await query("SELECT 1 FROM users WHERE role = 'admin'");
   if (!rowCount) {
-    const email = process.env.ADMIN_EMAIL || 'admin@cropdrop.local';
-    const pass = process.env.ADMIN_PASSWORD || 'Admin@1234';
+    // No password in the environment? Generate one and print it once instead of using a guessable default.
+    const generated = !process.env.ADMIN_PASSWORD;
+    const pass = process.env.ADMIN_PASSWORD || require('crypto').randomBytes(9).toString('base64url');
     await query("INSERT INTO users (full_name,email,password_hash,phone,role,status) VALUES ($1,$2,$3,$4,'admin','approved')",
-      ['CropDrop Admin', email, await bcrypt.hash(pass, 12), '0700000000']);
-    console.log(`Admin created: ${email}  (set ADMIN_PASSWORD in .env, then change it after first login)`);
+      ['Wayne Bowen', adminEmail, await bcrypt.hash(pass, 12), '0700000000']);
+    console.log(`Admin account created for ${adminEmail}` + (generated ? `\n  Generated password (shown once, save it): ${pass}` : ''));
   }
 }
 
