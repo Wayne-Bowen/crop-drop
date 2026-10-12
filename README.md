@@ -1,0 +1,80 @@
+# CropDrop
+
+A marketplace that connects smallholder farmers directly with buyers (households, hotels, schools, exporters). Farmers list produce, buyers search and order, admins approve farmers and listings and move orders through their lifecycle.
+
+**Stack:** Node.js 20+, Express 5, PostgreSQL (`pg`), plain HTML/CSS/JavaScript front end (no framework), PDFKit for receipts.
+
+## Pages
+Public: Home, About, Market (catalogue), Product detail, Farmers (list and profiles), Contact.
+Accounts: Login and Register (farmer or buyer). Admin accounts are created by the server, never by sign-up.
+Buyer: Cart, Checkout, My orders (status timeline), Receipt (print or PDF).
+Farmer: Dashboard with listing create, edit and delete (with photo upload) and orders for their produce.
+Admin: Approve farmers, approve or reject listings, move orders Placed, Confirmed, Dispatched, Delivered, read contact messages.
+
+## Run it locally (WSL / Ubuntu)
+
+1. Node 20 or newer (`node -v`). If it is older, install the current LTS with nvm (see nvm's GitHub page).
+2. PostgreSQL:
+   ```bash
+   sudo apt update && sudo apt install -y postgresql postgresql-contrib
+   sudo service postgresql start
+   sudo -u postgres psql -c "CREATE USER cropdrop WITH PASSWORD 'cropdrop';"
+   sudo -u postgres psql -c "CREATE DATABASE cropdrop OWNER cropdrop;"
+   sudo -u postgres psql -c "CREATE DATABASE cropdrop_test OWNER cropdrop;"
+   ```
+3. The app:
+   ```bash
+   cp .env.example .env        # then edit SESSION_SECRET and ADMIN_PASSWORD
+   npm install
+   npm run seed                # optional demo farmers, produce and a demo buyer
+   npm run dev                 # http://localhost:3000
+   ```
+Tables are created automatically on first start (`schema.sql`).
+
+Demo logins after `npm run seed`: admin `admin@cropdrop.local` (password from `.env`, default `Admin@1234`), farmer `mary@cropdrop.local` / `Farmer@1234`, buyer `buyer@cropdrop.local` / `Buyer@1234`.
+
+Product photos: farmers upload them from the dashboard. For seeded produce, drop JPGs named `tomatoes.jpg`, `kale.jpg`, `maize.jpg`, `mangoes.jpg`, `eggs.jpg`, `milk.jpg`, `green-grams.jpg`, `onions.jpg`, `bananas.jpg`, `beans.jpg`, `wheat-flour.jpg`, `chicken.jpg` into `public/img/products/` **before** running the seed.
+
+## Environment variables
+| Name | Purpose |
+|---|---|
+| `PORT` | Port to listen on (hosts set this for you). Default 3000. |
+| `NODE_ENV` | `production` turns on secure cookies and requires `SESSION_SECRET`. |
+| `DATABASE_URL` | PostgreSQL connection string. |
+| `DATABASE_SSL` | `true` when the database host requires SSL (most hosted Postgres does). |
+| `SESSION_SECRET` | Long random string used to sign session cookies. |
+| `ADMIN_EMAIL`, `ADMIN_PASSWORD` | The first admin account, created if no admin exists. |
+
+Generate a secret: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+## Commands
+| Command | What it does |
+|---|---|
+| `npm start` | Run the server (production). |
+| `npm run dev` | Run with auto-restart on file changes. |
+| `npm run seed` | Add demo data. Safe to run twice. |
+| `npm test` | End-to-end API tests. Needs `DATABASE_URL` pointing at a database ending in `_test`; it wipes that database's tables. |
+
+Example: `DATABASE_URL=postgres://cropdrop:cropdrop@localhost:5432/cropdrop_test npm test`
+
+## Data model
+`users`, `categories`, `produce`, `orders`, `order_items`, plus `messages` (contact form) and `session` (created by the session store).
+
+## API (JSON)
+| Method and path | Who | Notes |
+|---|---|---|
+| `GET /api/health` | anyone | Database ping, used for monitoring. |
+| `GET /api/produce` | anyone | `q`, `category`, `location`, `sort`, `limit`, `offset`. |
+| `GET /api/produce/:id`, `/batch?ids=` | anyone | Approved, in-stock produce only. |
+| `POST/PUT/DELETE /api/produce` | farmer | Multipart upload; edits go back to approval. |
+| `GET /api/farmers`, `/api/farmers/:id` | anyone | Approved farmers and their produce. |
+| `POST /api/auth/register`, `/login`, `/logout` | anyone | Rate limited. |
+| `POST /api/orders` | buyer | Prices and stock are checked in the database, in one transaction. |
+| `GET /api/orders/mine`, `/:id`, `/:id/receipt.pdf` | buyer, admin | A buyer sees only their own orders. |
+| `GET /api/admin/overview`, `POST /api/admin/...` | admin | Approvals and order status changes. |
+
+## Security
+Parameterised SQL everywhere (no string-built queries), bcrypt password hashing, strong-password rule, session fixation protection, login rate limiting, CSRF token on every state-changing request, role checks on every protected route, server-side validation that matches the client-side validation, upload type and file-signature checks, Helmet headers with a strict Content Security Policy, output escaping in the front end, secrets only in environment variables.
+
+## Deploying
+Any host that runs Node.js and offers PostgreSQL works. Set the build command to `npm install`, the start command to `npm start`, and add the environment variables above (use the host's `DATABASE_URL`, set `DATABASE_SSL=true`, `NODE_ENV=production`). Use `/api/health` as the health check path. Uploaded photos are stored on disk in `uploads/`, which many free hosts wipe on redeploy; for a long-lived site, move uploads to object storage.

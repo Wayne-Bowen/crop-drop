@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in or register | CropDrop</title>
+<meta name="description" content="Log in to CropDrop or create a buyer or farmer account.">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/unbounded-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-active="login">
+<header class="site-header" id="header"></header>
+<main id="main">
+
+<section><div class="wrap">
+  <div class="tabs" id="tabs"><button class="tab on" data-t="login" type="button">Log in</button><button class="tab" data-t="register" type="button">Register</button></div>
+  <div class="auth">
+    <div id="loginPane">
+      <h2 style="margin-bottom:8px">Welcome back</h2><p class="muted" style="margin-bottom:24px">Log in to order, sell or manage the market.</p>
+      <form class="form" id="loginForm" novalidate>
+        <div id="lMsg"></div>
+        <div class="fg"><label for="lemail">Email</label><input class="field" id="lemail" name="email" type="email" autocomplete="email"><div class="err"></div></div>
+        <div class="fg"><label for="lpass">Password</label><input class="field" id="lpass" name="password" type="password" autocomplete="current-password"><div class="err"></div></div>
+        <button class="btn" type="submit">Log in</button>
+      </form>
+    </div>
+    <div class="side hide-m" id="registerPane">
+      <h2 style="margin-bottom:8px">Create an account</h2><p class="muted" style="margin-bottom:24px">Buyers can order straight away. Farmers are approved first.</p>
+      <form class="form" id="registerForm" novalidate>
+        <div id="rMsg"></div>
+        <div class="fg"><div class="roles" role="radiogroup" aria-label="Account type">
+          <label class="role"><input type="radio" name="role" value="buyer" checked><b>Buyer</b><span>Order produce</span></label>
+          <label class="role"><input type="radio" name="role" value="farmer"><b>Farmer</b><span>List produce. Needs approval.</span></label>
+        </div><div class="err"></div></div>
+        <div class="fg"><label for="rname">Full name</label><input class="field" id="rname" name="full_name" autocomplete="name" maxlength="100"><div class="err"></div></div>
+        <div class="two"><div class="fg"><label for="remail">Email</label><input class="field" id="remail" name="email" type="email" autocomplete="email" maxlength="150"><div class="err"></div></div>
+        <div class="fg"><label for="rphone">Phone</label><input class="field" id="rphone" name="phone" placeholder="0712345678" autocomplete="tel"><div class="err"></div></div></div>
+        <div class="fg"><label for="rpass">Password</label><input class="field" id="rpass" name="password" type="password" autocomplete="new-password"><div class="err"></div></div>
+        <button class="btn" type="submit">Create account</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+</main>
+<footer class="site-footer" id="footer"></footer>
+<script type="module" src="/js/pages/login.js"></script>
+</body>
+</html>

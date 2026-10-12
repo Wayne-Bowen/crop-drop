@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buy direct from farmers | CropDrop</title>
+<meta name="description" content="CropDrop connects smallholder farmers directly with buyers. Browse fresh produce, order online and track it to delivery.">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/unbounded-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/fanta.css">
+</head>
+<body data-active="home">
+<header class="site-header" id="header"></header>
+<main id="main">
+
+<div class="ticker" id="tickerWrap" hidden><div class="ticker-track" id="ticker"></div></div>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Direct from the farm</span>
+      <h1 aria-label="Your tomatoes took four detours. Ours go straight to you."><span class="w" style="animation-delay:.05s">Your</span> <span class="w" style="animation-delay:.12s">tomatoes</span> <span class="w" style="animation-delay:.19s">took</span> <span class="w" style="animation-delay:.26s">four</span> <span class="w" style="animation-delay:.33s">detours.</span> <em><span class="w" style="animation-delay:.5s">Ours</span> <span class="w" style="animation-delay:.57s">go</span> <span class="w" style="animation-delay:.64s">straight</span> <span class="w" style="animation-delay:.71s">to</span> <span class="w" style="animation-delay:.78s">you.</span></em></h1>
+      <p class="lead">Farmers list it. You buy it. The middlemen can find something else to do.</p>
+      <form class="search" action="/catalogue" method="get" role="search">
+        <label class="sr" for="hq">Search produce</label>
+        <input id="hq" name="q" placeholder="What are you after? Tomatoes, maize, eggs..." autocomplete="off">
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <div class="hero-cta">
+        <a class="btn" href="/catalogue">Browse produce <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a class="btn ghost" href="/login#register">Sell as a farmer</a>
+      </div>
+      <div class="proof" id="proof">
+        <div><strong data-k="farmers">0</strong><span>approved farmers</span></div>
+        <div><strong data-k="listings">0</strong><span>items on the market</span></div>
+        <div><strong data-k="orders">0</strong><span>orders placed</span></div>
+      </div>
+    </div>
+    <div class="panel drop-panel" aria-live="polite">
+      <div class="scan"></div>
+      <svg class="falling-drop" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 5C30 5 12 25 12 37A18 18 0 0 0 48 37C48 25 30 5 30 5Z" fill="#f04e30"/></svg>
+      <div class="panel-h"><span class="live"><i class="dot"></i>Latest drops</span><span id="feedTime">live</span></div>
+      <div id="feed"><div class="skel" style="min-height:300px;border-radius:0"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="trust"><div class="wrap trust-grid">
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><div><b>Farmers set the price</b><span>No agent shaving it down.</span></div></div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg><div><b>Every farmer is approved</b><span>Accounts and listings are checked first.</span></div></div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><b>Track every order</b><span>Placed, confirmed, dispatched, delivered.</span></div></div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><div><b>A receipt for each order</b><span>Print it or save it as a PDF.</span></div></div>
+</div></div>
+
+<section><div class="wrap">
+  <div class="sec-head rv"><div><span class="eyebrow">Browse by type</span><h2 style="margin-top:10px">Start with what you eat</h2></div></div>
+  <div class="cats rv" id="cats"></div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="sec-head rv"><div><span class="eyebrow">Fresh drops</span><h2 style="margin-top:10px">New on the market</h2></div><a class="btn ghost sm" href="/catalogue">See everything</a></div>
+  <div class="grid" id="fresh"></div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="sec-head rv"><div><span class="eyebrow">How it works</span><h2 style="margin-top:10px">Three steps. No committee.</h2></div></div>
+  <div class="steps">
+    <div class="step rv"><b>Farmers post what they've got.</b><span class="muted">Name, price, quantity, a photo and where it's from.</span></div>
+    <div class="step rv"><b>You pick it and place the order.</b><span class="muted">Search, filter, add to cart. That's the whole job.</span></div>
+    <div class="step rv"><b>It moves from placed to delivered.</b><span class="muted">You can see where your order is at any point.</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap split">
+  <div class="rv">
+    <span class="eyebrow">For farmers</span>
+    <h2 style="margin:10px 0 16px">You grow it. You price it.</h2>
+    <p class="lead">Buyers find you directly. No agent taking a cut before you've sold a single kilo.</p>
+    <ul class="checks">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Register once, get approved, list as much as you like.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Edit prices and stock whenever the season changes.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>See which orders include your produce.</span></li>
+    </ul>
+    <a class="btn" href="/login#register">Start selling <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+  </div>
+  <div class="panel rv" style="padding:28px">
+    <div class="eyebrow" style="margin-bottom:16px">Who buys</div>
+    <div class="info-list" style="background:var(--s1)">
+      <div><b>Households</b><span>Weekly staples</span></div>
+      <div><b>Hotels</b><span>Bulk and regular supply</span></div>
+      <div><b>Schools</b><span>Term-time kitchens</span></div>
+      <div><b>Exporters</b><span>Larger volumes</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="sec-head rv" style="justify-content:center;text-align:center"><div><span class="eyebrow">Questions</span><h2 style="margin-top:10px">Fair enough. Ask away.</h2></div></div>
+  <div class="faq rv">
+    <details><summary>Do I need an account to browse? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><p>No. Browse, search and fill a cart without signing up. You only need a buyer account when you place the order.</p></details>
+    <details><summary>How do farmers get approved? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><p>An administrator checks each new farmer account and each listing before it goes live on the market.</p></details>
+    <details><summary>Can I see where my order is? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><p>Yes. Every order moves through placed, confirmed, dispatched and delivered. The current status shows on your My orders page.</p></details>
+    <details><summary>What do I get after ordering? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></summary><p>A receipt with every item, farmer, quantity and price. Print it or download it as a PDF.</p></details>
+  </div>
+</div></section>
+
+<section class="cta-final"><div class="wrap rv">
+  <h2>Still scrolling? The tomatoes aren't getting any fresher.</h2>
+  <p class="lead" style="margin-inline:auto">Pick something. A farmer is waiting.</p>
+  <a class="btn" href="/catalogue">Browse produce <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+</div></section>
+
+</main>
+<footer class="site-footer" id="footer"></footer>
+<script type="module" src="/js/pages/home.js"></script>
+</body>
+</html>
