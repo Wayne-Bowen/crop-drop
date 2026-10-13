@@ -11,7 +11,11 @@ const pool = new Pool({
   connectionString: url,
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false, // hosted databases usually need SSL
   max: 10,
+  connectionTimeoutMillis: 20000, // hosted databases can take a few seconds to wake up
+  idleTimeoutMillis: 30000,
 });
+// Hosted databases drop idle connections. Without this handler that would crash the whole app.
+pool.on('error', e => console.error('Database connection error (will reconnect):', e.message));
 
 const query = (text, params) => pool.query(text, params);
 
