@@ -1,4 +1,4 @@
-# Assessment 3: Hosting CropDrop
+#  Hosting CropDrop
 
 Application: CropDrop, Node.js 20+ and Express 5, PostgreSQL, sessions stored in the database.
 Plan chosen: **Render (web service) + Neon (PostgreSQL)**, both on free tiers, deployed from GitHub.
@@ -7,7 +7,7 @@ Free-tier terms change often. The figures below were checked on 13 October 2026 
 
 ---
 
-## Task 1: Platform choice
+##  Platform choice
 
 ### What the app needs
 | Need | Why |
@@ -54,7 +54,7 @@ Free-tier terms change often. The figures below were checked on 13 October 2026 
 
 ---
 
-## Task 2: Domain lookup on www.cdacc.go.ke
+##  Domain lookup on www.cdacc.go.ke
 
 Run these in WSL and paste the output into your report as screenshots or text.
 
@@ -85,7 +85,7 @@ Record exactly what the tools show. Do not fill in anything from memory.
 
 ---
 
-## Task 3: GitHub repository
+## GitHub repository
 
 You have already pushed. Prove each requirement and keep the output as evidence.
 
@@ -109,7 +109,7 @@ git push
 
 ---
 
-## Task 4: Deployment account and configuration
+##  Deployment account and configuration
 
 ### A. Create the database (Neon)
 1. Sign up at neon.com with GitHub. No card is needed.
@@ -146,7 +146,7 @@ git push
 
 ---
 
-## Task 5: Deploy and verify
+##  Deploy and verify
 
 1. Click **Create Web Service**. Render builds from GitHub.
 2. Open the **Logs** tab. Success looks like the install finishing, then `Admin account created for bowenwayne44@gmail.com`, then `CropDrop running on ...`. Note any warnings.
@@ -169,7 +169,7 @@ Do **not** run `npm run seed` against the live database. It creates demo account
 
 ---
 
-## Task 6: SSL/TLS
+##  SSL/TLS
 
 1. Open the site in a browser and click the padlock in the address bar, then **Connection is secure** then **Certificate**. Screenshot the issuer and validity dates.
 2. Check the redirect and headers from WSL:
@@ -183,7 +183,7 @@ If the HTTP address does not redirect on your service, record that honestly and 
 
 ---
 
-## Task 7: Monitoring
+## Monitoring
 
 1. **Render Logs tab.** Watch for errors while you use the site. Filter for `error`. Screenshot a clean period.
 2. **Render Events and Metrics tabs.** Note deploys, restarts, memory and CPU.

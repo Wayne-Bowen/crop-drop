@@ -1,10 +1,10 @@
-# Assessment 2, tasks 8 to 10: debugging tools, regression testing, documentation
+#  debugging tools, regression testing, documentation
 
 This guide shows the method and gives templates. **The findings, screenshots and results must be your own**, from running the application yourself. Where a defect or fault appears below it is an example of how to record one.
 
 ---
 
-## Task 8: Isolate each defect with debugging tools before fixing it
+##  Isolate each defect with debugging tools before fixing it
 
 ### Tools available for CropDrop
 
@@ -45,7 +45,7 @@ Other faults you can plant, one per module, so each module has its own evidence:
 
 ---
 
-## Task 9: Regression testing after each fix
+##  Regression testing after each fix
 
 After each fix:
 
@@ -69,7 +69,7 @@ After each fix:
 
 ---
 
-## Task 10: Debugging documentation
+## Debugging documentation
 
 One entry per defect or planted fault.
 
