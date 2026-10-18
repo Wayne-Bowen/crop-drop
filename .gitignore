@@ -4,3 +4,4 @@ uploads/*
 !uploads/.gitkeep
 *.log
 .DS_Store
+jar

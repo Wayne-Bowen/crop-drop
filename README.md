@@ -81,6 +81,16 @@ Example: `DATABASE_URL=postgres://cropdrop:cropdrop@localhost:5432/cropdrop_test
 ## Security
 Parameterised SQL everywhere (no string-built queries), bcrypt password hashing, strong-password rule, session fixation protection, login rate limiting, CSRF token on every state-changing request, role checks on every protected route, server-side validation that matches the client-side validation, upload type and file-signature checks, Helmet headers with a strict Content Security Policy, output escaping in the front end, secrets only in environment variables.
 
+## Testing
+Two test suites run against a throwaway `*_test` database (they refuse to run against anything else):
+
+| Command | What it does |
+|---|---|
+| `npm test` | 46 end-to-end API checks (regression suite) |
+| `npm run test:report` | 57 documented test cases with expected and actual results, written to `docs/testing/results/` |
+
+See `docs/testing/README.md` for the full testing documentation.
+
 ## Deploying
 CropDrop is set up for **Render** (web service) with **Neon** (PostgreSQL). The full guide, including the platform comparison, settings and the verification checklist, is in [`docs/assessment-3-hosting.md`](docs/assessment-3-hosting.md). The maintenance plan is in [`docs/maintenance-schedule.md`](docs/maintenance-schedule.md).
 

@@ -19,10 +19,12 @@ router.get('/me', wrap(async (req, res) => {
 }));
 
 router.post('/register', wrap(async (req, res) => {
-  const full_name = clean(req.body.full_name, 100), email = clean(req.body.email, 150).toLowerCase();
-  const phone = clean(req.body.phone, 20), role = clean(req.body.role, 10), password = req.body.password;
+
+  const trimmed = v => String(v ?? '').trim();
+  const full_name = trimmed(req.body.full_name), email = trimmed(req.body.email).toLowerCase();
+  const phone = trimmed(req.body.phone), role = clean(req.body.role, 10), password = req.body.password;
   const errors = {};
-  if (full_name.length < 2) errors.full_name = 'Enter your full name.';
+  if (full_name.length < 2 || full_name.length > 100) errors.full_name = 'Enter your full name (2 to 100 characters).';
   if (!isEmail(email)) errors.email = 'Enter a valid email address.';
   if (!isPhone(phone)) errors.phone = 'Use a Kenyan number like 0712345678.';
   if (!['farmer', 'buyer'].includes(role)) errors.role = 'Choose farmer or buyer.'; // admin can never self-register
