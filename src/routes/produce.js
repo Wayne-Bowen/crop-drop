@@ -18,7 +18,7 @@ router.get('/', wrap(async (req, res) => {
   if (q) where.push(`p.name ILIKE ${add(like(q))}`);
   if (loc) where.push(`p.location ILIKE ${add(like(loc))}`);
   if (cat) where.push(`p.category_id = ${add(cat)}`);
-  const order = { low: 'p.price DESC', high: 'p.price DESC', stock: 'p.quantity ASC' }[req.query.sort] || 'p.created_at DESC, p.id DESC';
+  const order = { low: 'p.price ASC', high: 'p.price DESC', stock: 'p.quantity ASC' }[req.query.sort] || 'p.created_at DESC, p.id DESC';
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 24, 1), 60);
   const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
   const w = ' WHERE ' + where.join(' AND ');
