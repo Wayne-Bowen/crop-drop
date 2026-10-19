@@ -25,7 +25,7 @@ router.post('/', requireRole('buyer'), wrap(async (req, res) => {
         FROM produce p JOIN users u ON u.id = p.farmer_id WHERE p.id = $1 FOR UPDATE OF p`, [id])).rows[0];
       if (!p || p.status !== 'approved' || p.fstatus !== 'approved') throw new HttpError(409, 'An item in your cart is no longer available.');
       if (p.quantity < qty) throw new HttpError(409, `Only ${p.quantity} of ${p.name} left. Lower the quantity to continue.`);
-      total += p.price; lines.push({ id, qty, price: p.price }); // price comes from the database, never from the browser
+      total += p.price * qty; lines.push({ id, qty, price: p.price }); // price comes from the database, never from the browser
     }
     const o = (await c.query('INSERT INTO orders (buyer_id, total) VALUES ($1, $2) RETURNING id', [req.session.user.id, money(total)])).rows[0];
     for (const l of lines) {
