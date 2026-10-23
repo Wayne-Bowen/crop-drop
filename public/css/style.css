@@ -119,10 +119,10 @@ section{padding:110px 0}
 .chip{padding:8px 16px;border-radius:6px;border:1px solid var(--line2);background:transparent;color:var(--muted);font-weight:500;font-size:.9rem;transition:all .2s}
 .chip:hover{color:var(--text);border-color:var(--muted)}
 .chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
-.rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 24px 24px;margin-inline:calc((100vw - min(1240px,100vw - 48px))/-2);scrollbar-width:none}
+.rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px max(24px,calc((100% - 1240px)/2)) 24px;scroll-padding-inline:max(24px,calc((100% - 1240px)/2));scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 .rail .pcard{flex:0 0 min(300px,78vw);scroll-snap-align:start}
-.rail::before{content:"";flex:0 0 calc((100vw - min(1240px,100vw - 48px))/2 - 24px)}
+
 
 /* product card: image first */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px 22px}
