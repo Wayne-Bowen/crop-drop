@@ -5,7 +5,7 @@
 
 | Run | Browser and version | Screen size |
 |---|---|---|
-| A | Google Chrome ______ | 1440 x 900 |
+| A | Google Chrome 155.0.8059.85 (Windows 11) | 1440 x 900 |
 | B | Google Chrome ______ | 390 x 844 (phone) |
 | C | Microsoft Edge or Firefox ______ | 1440 x 900 |
 
@@ -15,25 +15,25 @@
 
 | # | Check | How | Run A | Run B | Run C | Notes and screenshot |
 |---|---|---|---|---|---|---|
-| 1 | Layout does not scroll sideways | Scroll the page, look for a horizontal scrollbar | | | | |
-| 2 | Navigation works | Menu button on the phone, links on desktop; each link opens the right page | | | | |
-| 3 | Product cards reflow | 4 columns on desktop, 2 on phone, no overlapping text | | | | |
-| 4 | Text is readable | Body text at least about 14 px, good contrast on dark background | | | | |
-| 5 | Search and filters usable | Type "toma", pick a category chip, change Sort | | | | |
-| 6 | Empty state | Search "zzzz": a clear message and a way to clear filters | | | | |
-| 7 | Add to cart | Tap the + button on a card; cart count increases; confirmation shown | | | | |
-| 8 | Touch targets | Buttons are easy to hit with a thumb (about 40 px or larger) | | | | |
-| 9 | Images load | Product photos show; a missing photo falls back to an icon | | | | |
-| 10 | Forms (Register page) | Tab through fields; error messages show under the right field | | | | |
-| 11 | Keyboard use | Tab reaches every control with a visible focus outline | | | | |
-| 12 | Speed | The catalogue is usable within about 2 seconds after the page loads | | | | |
+| 1 | Layout does not scroll sideways | Scroll the page, look for a horizontal scrollbar | Fail on home page (U1); retest after fix: Pass | | | U1-01, U1-03 |
+| 2 | Navigation works | Menu button on the phone, links on desktop; each link opens the right page | Pass | | | |
+| 3 | Product cards reflow | 4 columns on desktop, 2 on phone, no overlapping text | Pass | | | |
+| 4 | Text is readable | Body text at least about 14 px, good contrast on dark background | Pass | | | |
+| 5 | Search and filters usable | Type "toma", pick a category chip, change Sort | Pass | | | |
+| 6 | Empty state | Search "zzzz": a clear message and a way to clear filters | Pass | | | |
+| 7 | Add to cart | Tap the + button on a card; cart count increases; confirmation shown | Pass | | | |
+| 8 | Touch targets | Buttons are easy to hit with a thumb (about 40 px or larger) | Pass | | | |
+| 9 | Images load | Product photos show; a missing photo falls back to an icon | Pass | | | |
+| 10 | Forms (Register page) | Tab through fields; error messages show under the right field | Pass | | | |
+| 11 | Keyboard use | Tab reaches every control with a visible focus outline | Pass | | | |
+| 12 | Speed | The catalogue is usable within about 2 seconds after the page loads | Pass | | | |
 
 ## Issues observed
 Record every layout, navigation or interaction problem. If there are none, say so and state what you looked for.
 
 | ID | Page | Run | What was wrong | Expected | Severity | Screenshot |
 |---|---|---|---|---|---|---|
-| U1 | | | | | | |
+| U1 | Home | A | Page scrolled sideways (the product row, class rail, was wider than the screen) | No horizontal scrollbar; page fits the screen width | Medium | U1-01, U1-03 |
 
 Anything marked Fail or Issue goes into the defect register in `05-test-report-and-defects.md`.
 

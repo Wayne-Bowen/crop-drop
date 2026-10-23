@@ -1,0 +1,14 @@
+MAN-01 lockout check against http://localhost:3000 at 2026-10-22T21:06:33.347Z
+attempt  1: HTTP 401  Incorrect email or password.
+attempt  2: HTTP 401  Incorrect email or password.
+attempt  3: HTTP 401  Incorrect email or password.
+attempt  4: HTTP 401  Incorrect email or password.
+attempt  5: HTTP 401  Incorrect email or password.
+attempt  6: HTTP 401  Incorrect email or password.
+attempt  7: HTTP 401  Incorrect email or password.
+attempt  8: HTTP 401  Incorrect email or password.
+attempt  9: HTTP 401  Incorrect email or password.
+attempt 10: HTTP 401  Incorrect email or password.
+attempt 11: HTTP 429  Too many login attempts. Try again in 15 minutes.
+attempt 12: HTTP 429  Too many login attempts. Try again in 15 minutes.
+RESULT: PASS. The first 10 wrong attempts were refused (401); further attempts were blocked (429).
