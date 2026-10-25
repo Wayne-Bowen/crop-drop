@@ -1,4 +1,4 @@
-MAN-01 lockout check against http://localhost:3000 at 2026-10-22T21:06:33.347Z
+MAN-01 lockout check against http://localhost:3000 at 2026-10-25T09:37:55.570Z
 attempt  1: HTTP 401  Incorrect email or password.
 attempt  2: HTTP 401  Incorrect email or password.
 attempt  3: HTTP 401  Incorrect email or password.
