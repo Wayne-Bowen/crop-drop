@@ -92,6 +92,6 @@ Two test suites run against a throwaway `*_test` database (they refuse to run ag
 See `docs/testing/README.md` for the full testing documentation.
 
 ## Deploying
-CropDrop is set up for **Render** (web service) with **Neon** (PostgreSQL). The full guide, including the platform comparison, settings and the verification checklist, is in [`docs/assessment-3-hosting.md`](docs/assessment-3-hosting.md). The maintenance plan is in [`docs/maintenance-schedule.md`](docs/maintenance-schedule.md).
+CropDrop is set up for **Render** (web service) with **Neon** (PostgreSQL). The full guide, including the platform comparison, settings and the verification checklist, is in [`docs/deployment.md`](docs/deployment.md). The maintenance plan is in [`docs/maintenance-schedule.md`](docs/maintenance-schedule.md).
 
 In short: build command `npm install`, start command `npm start`, health check `/api/health`, and set `NODE_ENV=production`, `DATABASE_URL`, `DATABASE_SSL=true`, `SESSION_SECRET`, `ADMIN_EMAIL` and `ADMIN_PASSWORD` in the host's dashboard. Uploaded photos are stored on the web service's temporary disk, so use Unsplash photo links for product images on a free host.

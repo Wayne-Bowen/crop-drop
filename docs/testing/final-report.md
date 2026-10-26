@@ -1,4 +1,4 @@
-# CropDrop: testing and debugging report (Assessment 2)
+# CropDrop: testing and debugging report
 
 | | |
 |---|---|

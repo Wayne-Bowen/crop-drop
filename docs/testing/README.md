@@ -1,4 +1,4 @@
-# Assessment 2: Testing and debugging (CropDrop)
+# Testing and debugging (CropDrop)
 
 | Task | Document |
 |---|---|

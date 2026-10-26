@@ -1,0 +1,78 @@
+Lookup run: 2026-10-25 09:57 UTC
+
+== WHOIS cdacc.go.ke
+Domain Name: cdacc.go.ke
+The queried object does not exist: No Object Found
+>>> Last update of WHOIS database: 2026-10-25T09:49:57.312Z <<<
+
+
+
+== A records
+
+== www
+
+== Name servers
+
+== Mail servers
+
+== TXT records
+
+== SOA
+
+Second lookup run: 2026-10-25 14:53 UTC
+
+== Control: does DNS work from this machine?
+142.251.47.14
+
+== cdacc.go.ke (the name in the paper), status line
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 5516
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0
+
+== WHOIS tvetcdacc.go.ke
+Domain Name: tvetcdacc.go.ke
+Registry Domain ID: 320195-KENIC
+Updated Date: 2026-02-18T05:30:13Z
+Creation Date: 2016-02-22T13:24:19Z
+Registry Expiry Date: 2027-02-22T13:24:19Z
+Registrar Registration Expiration Date: 2027-02-22T13:24:19Z
+Registrar: ICT Authority
+Registrar Street Address: Teleposta Towers, 12th Flr,, Kenyatta Ave., Nairobi, Kenya., , P.O. Box 27150 - 00100,, Nairobi, Kenya.
+Registrar City: Nairobi
+Registrar State: Kenya
+Registrar Postal Code: 00100
+Registrar Phone: +254 20 2211960
+Registrar Email: websupport@icta.go.ke
+Registrar Abuse Contact Email: 
+Registrar Abuse Contact Phone: 
+Domain Status: active https://icann.org/epp#active
+Name Server: ns1.kenet.or.ke
+Name Server: ns2.kenet.or.ke
+Name Server: ns3.kenet.or.ke
+DNSSEC: unsigned
+>>> Last update of WHOIS database: 2026-10-25T14:39:59.773Z <<<
+
+For more information on domain status codes, please visit https://icann.org/epp
+
+
+
+== A record
+tvetcdacc.go.ke.	3600	IN	A	197.136.12.4
+
+== www
+www.tvetcdacc.go.ke.	3600	IN	CNAME	tvetcdacc.go.ke.
+tvetcdacc.go.ke.	3599	IN	A	197.136.12.4
+
+== Name servers
+tvetcdacc.go.ke.	86400	IN	NS	ns3.kenet.or.ke.
+tvetcdacc.go.ke.	86400	IN	NS	ns1.kenet.or.ke.
+tvetcdacc.go.ke.	86400	IN	NS	ns2.kenet.or.ke.
+
+== Mail servers
+tvetcdacc.go.ke.	60	IN	MX	0 tvetcdacc-go-ke.mail.protection.outlook.com.
+
+== TXT
+tvetcdacc.go.ke.	3600	IN	TXT	"MS=ms42129984"
+tvetcdacc.go.ke.	3600	IN	TXT	"v=spf1 include:spf.protection.outlook.com -all"
+
+== SOA
+tvetcdacc.go.ke.	21600	IN	SOA	ns1.kenet.or.ke. hostmaster.kenet.or.ke. 2026072202 14400 7200 604800 300
