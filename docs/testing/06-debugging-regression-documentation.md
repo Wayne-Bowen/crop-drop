@@ -1,4 +1,4 @@
-# Tasks 7 to 10: classify and correct defects, debug with tools, regression test, document
+classify and correct defects, debug with tools, regression test, document
 
 The findings, screenshots and results must come from your own runs. The worked example (D1) shows how to record one properly.
 
